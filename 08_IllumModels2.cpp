@@ -164,7 +164,7 @@ bool Start() {
 	gLights.push_back(light01);
 	*/
 	Light light02;
-	light02.Position = glm::vec3(1.0f, 5.0f, -5.0f);
+	light02.Position = glm::vec3(5.0f, 5.0f, -5.0f);
 	light02.Color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	light02.Power = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
 	gLights.push_back(light02);
