@@ -70,12 +70,14 @@ Model* house;
 Model* lightDummy;
 Model* sphere;
 Model* Puertas;
+Model* TiendaRopa;
 
 // Cubemap
 CubeMap* mainCubeMap;
 
 // Materiales
 Material material;
+Material tiendar;
 
 // Luces
 std::vector<Light> gLights;
@@ -139,7 +141,7 @@ bool Start() {
 	mLightsShader = new Shader("shaders/11_PhongShaderMultLights.vs", "shaders/11_PhongShaderMultLights.fs");
 	basicShader = new Shader("shaders/10_vertex_simple.vs", "shaders/10_fragment_simple.fs");
 	cubemapShader = new Shader("shaders/10_vertex_cubemap.vs", "shaders/10_fragment_cubemap.fs");
-
+	TiendaRopa= new Model("models/IllumModels/TiendaRopaF.fbx");
 	Puertas = new Model("models/IllumModels/PUERTASF.fbx");
 	//sphere = new Model("models/IllumModels/Sphere.fbx");
 
@@ -184,14 +186,17 @@ bool Start() {
 
 	lightDummy = new Model("models/IllumModels/lightDummy.fbx");
 
-	// Configuración de propiedades materiales
+	// Configuración de propiedades cristal
 	// Tabla: http://devernay.free.fr/cours/opengl/materials.html
 	material.ambient = glm::vec4(0.0f, 0.1f, 0.06f, 0.5f); // Color ambiental oscuro
 	material.diffuse = glm::vec4(0.0f, 0.50980392f, 0.50980392f, 0.5f); // Color difuso cian
 	material.specular = glm::vec4(0.50196078f, 0.50196078f, 0.50196078f, 0.5f); // Color especular blanco brillante
 	material.transparency = 0.5f;//transparencia media
-
-
+	//tiendaropa
+	tiendar.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f); // colores mate
+	tiendar.diffuse = glm::vec4(0.8f, 0.8f, 0.8f, 1.0f); // 
+	tiendar.specular = glm::vec4(0.1f, 0.1f, 0.1f, 0.5f); //
+	tiendar.transparency = 1.0f;//transparencia media
 
 	// SoundEngine->play2D("sound/EternalGarden.mp3", true);
 
@@ -282,21 +287,27 @@ bool Update() {
 
 		mLightsShader->setVec3("eye", camera.Position);
 
-		// Aplicamos propiedades materiales
+		// Aplicamos propiedades materiales de cristal
 		mLightsShader->setVec4("MaterialAmbientColor", material.ambient);
 		mLightsShader->setVec4("MaterialDiffuseColor", material.diffuse);
 		mLightsShader->setVec4("MaterialSpecularColor", material.specular);
 		mLightsShader->setFloat("transparency", material.transparency);
 		//sphere->Draw(*mLightsShader);
-		Puertas->Draw(*mLightsShader);
-
+		//Puertas->Draw(*mLightsShader);
+		/*
 		glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(5.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
 		mLightsShader->setMat4("model", model);
 		//puerta 2
-		Puertas->Draw(*mLightsShader);
+		Puertas->Draw(*mLightsShader);*/
+		mLightsShader->setVec4("MaterialAmbientColor", tiendar.ambient);
+		mLightsShader->setVec4("MaterialDiffuseColor", tiendar.diffuse);
+		mLightsShader->setVec4("MaterialSpecularColor", tiendar.specular);
+		mLightsShader->setFloat("transparency", tiendar.transparency);
+
+		TiendaRopa->Draw(*mLightsShader);
 	}
 
 	glUseProgram(0);
