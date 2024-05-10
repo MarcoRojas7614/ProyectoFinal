@@ -72,6 +72,8 @@ Model* sphere;
 Model* Puertas;
 Model* TiendaRopa;
 Model* TiendaComida;
+Model* banos;
+
 // Cubemap
 CubeMap* mainCubeMap;
 
@@ -79,6 +81,7 @@ CubeMap* mainCubeMap;
 Material material;
 Material tiendar;
 Material tiendac;
+Material bano;
 
 // Luces
 std::vector<Light> gLights;
@@ -142,9 +145,10 @@ bool Start() {
 	mLightsShader = new Shader("shaders/11_PhongShaderMultLights.vs", "shaders/11_PhongShaderMultLights.fs");
 	basicShader = new Shader("shaders/10_vertex_simple.vs", "shaders/10_fragment_simple.fs");
 	cubemapShader = new Shader("shaders/10_vertex_cubemap.vs", "shaders/10_fragment_cubemap.fs");
-	TiendaRopa= new Model("models/IllumModels/TiendaRopaF.fbx");
+	TiendaRopa = new Model("models/IllumModels/TiendaRopaF.fbx");
 	Puertas = new Model("models/IllumModels/PUERTASF.fbx");
 	TiendaComida = new Model("models/IllumModels/TiendaComidaF.fbx");
+	banos = new Model("models/IllumModels/BANOF.fbx");
 
 	// Cubemap
 	vector<std::string> faces
@@ -206,6 +210,11 @@ bool Start() {
 	tiendac.specular = glm::vec4(0.5f, 0.5f, 0.5f, 0.5f); //brillo moderado
 	tiendac.transparency = 1.0f;//transparencia media
 
+	//banos
+	bano.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f); // opaco
+	bano.diffuse = glm::vec4(0.9f, 0.9f, 0.9f, 1.0f); // Apariencia de limpieza 
+	bano.specular = glm::vec4(0.1f, 0.1f, 0.1f, 1.0f); //pocos reflejos
+	bano.transparency = 1.0f;//transparencia media
 	// SoundEngine->play2D("sound/EternalGarden.mp3", true);
 
 	return true;
@@ -316,12 +325,18 @@ bool Update() {
 		mLightsShader->setFloat("transparency", tiendar.transparency);
 
 		//TiendaRopa->Draw(*mLightsShader);
+		//tienda de comida
 		mLightsShader->setVec4("MaterialAmbientColor", tiendac.ambient);
 		mLightsShader->setVec4("MaterialDiffuseColor", tiendac.diffuse);
 		mLightsShader->setVec4("MaterialSpecularColor", tiendac.specular);
 		mLightsShader->setFloat("transparency", tiendac.transparency);
-		TiendaComida->Draw(*mLightsShader);
-
+		//TiendaComida->Draw(*mLightsShader);
+		//banos
+		mLightsShader->setVec4("MaterialAmbientColor", bano.ambient);
+		mLightsShader->setVec4("MaterialDiffuseColor", bano.diffuse);
+		mLightsShader->setVec4("MaterialSpecularColor", bano.specular);
+		mLightsShader->setFloat("transparency", bano.transparency);
+		banos->Draw(*mLightsShader);
 	}
 
 	glUseProgram(0);
