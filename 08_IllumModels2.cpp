@@ -144,7 +144,7 @@ bool Start() {
 	cubemapShader = new Shader("shaders/10_vertex_cubemap.vs", "shaders/10_fragment_cubemap.fs");
 	TiendaRopa= new Model("models/IllumModels/TiendaRopaF.fbx");
 	Puertas = new Model("models/IllumModels/PUERTASF.fbx");
-	//sphere = new Model("models/IllumModels/Sphere.fbx");
+	TiendaComida = new Model("models/IllumModels/TiendaComidaF.fbx");
 
 	// Cubemap
 	vector<std::string> faces
