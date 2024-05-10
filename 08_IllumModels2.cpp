@@ -71,13 +71,14 @@ Model* lightDummy;
 Model* sphere;
 Model* Puertas;
 Model* TiendaRopa;
-
+Model* TiendaComida;
 // Cubemap
 CubeMap* mainCubeMap;
 
 // Materiales
 Material material;
 Material tiendar;
+Material tiendac;
 
 // Luces
 std::vector<Light> gLights;
@@ -169,7 +170,7 @@ bool Start() {
 	Light light02;
 	light02.Position = glm::vec3(5.0f, 5.0f, -5.0f);
 	light02.Color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	light02.Power = glm::vec4(5.0f, 5.0f, 5.0f, 1.0f);
+	light02.Power = glm::vec4(10.0f, 10.0f, 10.0f, 1.0f);
 	gLights.push_back(light02);
 	/*
 	Light light03;
@@ -196,7 +197,14 @@ bool Start() {
 	tiendar.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f); // colores mate
 	tiendar.diffuse = glm::vec4(0.8f, 0.8f, 0.8f, 1.0f); // 
 	tiendar.specular = glm::vec4(0.1f, 0.1f, 0.1f, 0.5f); //
-	tiendar.transparency = 1.0f;//transparencia media
+	tiendar.transparency = 1.0f;//transparencia normal
+
+
+	//tiendacomida
+	tiendac.ambient = glm::vec4(0.1f, 0.1f, 0.1f, 1.0f); // colores brilloso
+	tiendac.diffuse = glm::vec4(0.9f, 0.9f, 0.9f, 1.0f); // Apariencia de limpieza 
+	tiendac.specular = glm::vec4(0.5f, 0.5f, 0.5f, 0.5f); //brillo moderado
+	tiendac.transparency = 1.0f;//transparencia media
 
 	// SoundEngine->play2D("sound/EternalGarden.mp3", true);
 
@@ -307,7 +315,13 @@ bool Update() {
 		mLightsShader->setVec4("MaterialSpecularColor", tiendar.specular);
 		mLightsShader->setFloat("transparency", tiendar.transparency);
 
-		TiendaRopa->Draw(*mLightsShader);
+		//TiendaRopa->Draw(*mLightsShader);
+		mLightsShader->setVec4("MaterialAmbientColor", tiendac.ambient);
+		mLightsShader->setVec4("MaterialDiffuseColor", tiendac.diffuse);
+		mLightsShader->setVec4("MaterialSpecularColor", tiendac.specular);
+		mLightsShader->setFloat("transparency", tiendac.transparency);
+		TiendaComida->Draw(*mLightsShader);
+
 	}
 
 	glUseProgram(0);
