@@ -25,7 +25,7 @@
 #include <material.h>
 #include <light.h>
 #include <cubemap.h>
-
+#include <animatedmodel.h>
 #include <irrKlang.h>
 using namespace irrklang;
 //mensaje
@@ -60,10 +60,21 @@ float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 float elapsedTime = 0.0f;
 
+glm::vec3 position(0.0f, 0.0f, 0.0f);
+glm::vec3 forwardView(0.0f, 0.0f, 1.0f);
+float     trdpersonOffset = 1.5f;
+float     scaleV = 0.025f;
+float     rotateCharacter = 0.0f;
+float	  door_offset = 0.0;
+float	  door_rotation = 0.0f;
+
 // Shaders
 Shader* cubemapShader;
 Shader* mLightsShader;
 Shader* basicShader;
+Shader* proceduralShader;
+Shader* wavesShader;
+Shader* dynamicShader;
 
 // Carga la información del modelo
 Model* house;
@@ -94,7 +105,13 @@ Material tek;
 Material alie;
 Material parking;
 Material banque;
-
+// Modelos animados
+AnimatedModel* kirbe;
+float proceduralTime = 0.0f;
+float wavesTime = 0.0f;
+float tradius = 10.0f;
+float theta = 0.0f;
+float alpha = 0.0f;
 // Luces
 std::vector<Light> gLights;
 
@@ -154,19 +171,20 @@ bool Start() {
 	glEnable(GL_DEPTH_TEST);
 
 	// Compilación y enlace de shaders
-	mLightsShader = new Shader("shaders/11_PhongShaderMultLights.vs", "shaders/11_PhongShaderMultLights.fs");
-	basicShader = new Shader("shaders/10_vertex_simple.vs", "shaders/10_fragment_simple.fs");
-	cubemapShader = new Shader("shaders/10_vertex_cubemap.vs", "shaders/10_fragment_cubemap.fs");
-	TiendaRopa = new Model("models/IllumModels/TiendaRopaF.fbx");
+	//mLightsShader = new Shader("shaders/11_PhongShaderMultLights.vs", "shaders/11_PhongShaderMultLights.fs");
+	//basicShader = new Shader("shaders/10_vertex_simple.vs", "shaders/10_fragment_simple.fs");
+	//cubemapShader = new Shader("shaders/10_vertex_cubemap.vs", "shaders/10_fragment_cubemap.fs");
+	//TiendaRopa = new Model("models/IllumModels/TiendaRopaF.fbx");
 	//Puertas = new Model("models/IllumModels/PUERTASF.fbx");
-	TiendaComida = new Model("models/IllumModels/TiendaComidaF.fbx");
-	banos = new Model("models/IllumModels/BANOF.fbx");
-	acuario= new Model("models/IllumModels/acuarioF.fbx");
-	teko= new Model("models/IllumModels/TEKOF.fbx");
-	alien=new Model("models/IllumModels/TiendaAlienF.fbx");
-	Estascionamineto = new Model("models/IllumModels/parkingF.fbx");
-	fachada = new Model("models/IllumModels/fachadaF.fbx");
-	Banqueta = new Model("models/IllumModels/banquetaF.fbx");
+	//TiendaComida = new Model("models/IllumModels/TiendaComidaF.fbx");
+	//banos = new Model("models/IllumModels/BANOF.fbx");
+	//acuario= new Model("models/IllumModels/acuarioF.fbx");
+	//teko= new Model("models/IllumModels/TEKOF.fbx");
+	//alien=new Model("models/IllumModels/TiendaAlienF.fbx");
+	//Estascionamineto = new Model("models/IllumModels/parkingF.fbx");
+	//fachada = new Model("models/IllumModels/fachadaF.fbx");
+	//Banqueta = new Model("models/IllumModels/banquetaF.fbx");
+	kirbe= new AnimatedModel("models/IllumModels/KAYA.fbx");
 
 
 	// Cubemap
@@ -212,11 +230,11 @@ bool Start() {
 
 	// Configuración de propiedades cristal
 	// Tabla: http://devernay.free.fr/cours/opengl/materials.html
-	material.ambient = glm::vec4(0.0f, 0.1f, 0.06f, 0.5f); // Color ambiental oscuro
-	material.diffuse = glm::vec4(0.0f, 0.50980392f, 0.50980392f, 0.5f); // Color difuso cian
-	material.specular = glm::vec4(0.50196078f, 0.50196078f, 0.50196078f, 0.5f); // Color especular blanco brillante
-	material.transparency = 0.5f;//transparencia media
-	
+	//material.ambient = glm::vec4(0.0f, 0.1f, 0.06f, 0.5f); // Color ambiental oscuro
+	//material.diffuse = glm::vec4(0.0f, 0.50980392f, 0.50980392f, 0.5f); // Color difuso cian
+	//material.specular = glm::vec4(0.50196078f, 0.50196078f, 0.50196078f, 0.5f); // Color especular blanco brillante
+	//material.transparency = 0.5f;//transparencia media
+	/*
 	//tiendaropa
 	tiendar.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f); // colores mate
 	tiendar.diffuse = glm::vec4(0.8f, 0.8f, 0.8f, 1.0f); // 
@@ -272,6 +290,7 @@ bool Start() {
 	banque.diffuse = glm::vec4(0.3f, 0.3f, 0.3f, 1.0f); // Apariencia de limpieza 
 	banque.specular = glm::vec4(0.8f, 0.8f, 0.8f, 1.0f); // reflejos altos
 	banque.transparency = 1.0f;//transparencia normal
+	*/
 	return true;
 }
 
@@ -360,10 +379,10 @@ bool Update() {
 		mLightsShader->setVec3("eye", camera.Position);
 
 		// Aplicamos propiedades materiales de cristal
-		mLightsShader->setVec4("MaterialAmbientColor", material.ambient);
-		mLightsShader->setVec4("MaterialDiffuseColor", material.diffuse);
-		mLightsShader->setVec4("MaterialSpecularColor", material.specular);
-		mLightsShader->setFloat("transparency", material.transparency);
+		//mLightsShader->setVec4("MaterialAmbientColor", material.ambient);
+		//mLightsShader->setVec4("MaterialDiffuseColor", material.diffuse);
+		//mLightsShader->setVec4("MaterialSpecularColor", material.specular);
+		//mLightsShader->setFloat("transparency", material.transparency);
 		
 		//Puertas->Draw(*mLightsShader);
 		/*
@@ -376,6 +395,7 @@ bool Update() {
 		//puerta 2
 		Puertas->Draw(*mLightsShader);
 		*/
+		/*
 		mLightsShader->setVec4("MaterialAmbientColor", tiendar.ambient);
 		mLightsShader->setVec4("MaterialDiffuseColor", tiendar.diffuse);
 		mLightsShader->setVec4("MaterialSpecularColor", tiendar.specular);
@@ -441,7 +461,7 @@ bool Update() {
 		mLightsShader->setFloat("transparency", banque.transparency);
 		Banqueta->Draw(*mLightsShader);
 
-
+*/
 	}
 
 	glUseProgram(0);
@@ -468,7 +488,29 @@ bool Update() {
 	}
 
 	glUseProgram(0);
+	{
+		kirbe->UpdateAnimation(deltaTime);
 
+		// Activación del shader del personaje
+		dynamicShader->use();
+
+		// Aplicamos transformaciones de proyección y cámara (si las hubiera)
+		dynamicShader->setMat4("projection", projection);
+		dynamicShader->setMat4("view", view);
+
+		// Aplicamos transformaciones del modelo
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, position); // translate it down so it's at the center of the scene
+		model = glm::rotate(model, glm::radians(rotateCharacter), glm::vec3(0.0, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));	// it's a bit too big for our scene, so scale it down
+
+		dynamicShader->setMat4("model", model);
+
+		dynamicShader->setMat4("gBones", MAX_RIGGING_BONES, kirbe->gBones);
+
+		// Dibujamos el modelo
+		kirbe->Draw(*dynamicShader);
+	}
 	// glfw: swap buffers 
 	glfwSwapBuffers(window);
 	glfwPollEvents();
