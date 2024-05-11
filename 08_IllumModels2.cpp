@@ -76,6 +76,7 @@ Model* banos;
 Model* acuario;
 Model* teko;
 Model* alien;
+Model* Estascionamineto;
 
 // Cubemap
 CubeMap* mainCubeMap;
@@ -88,6 +89,7 @@ Material bano;
 Material acuar;
 Material tek;
 Material alie;
+Material parking;
 
 // Luces
 std::vector<Light> gLights;
@@ -157,7 +159,8 @@ bool Start() {
 	banos = new Model("models/IllumModels/BANOF.fbx");
 	acuario= new Model("models/IllumModels/ACUARIOF.fbx");
 	teko= new Model("models/IllumModels/TEKOF.fbx");
-	alien=new Model("models/IllumModels/ALIENF.fbx");
+	alien=new Model("models/IllumModels/TiendaAlienF.fbx");
+	Estascionamineto = new Model("models/IllumModels/parkingF.fbx");
 
 	// Cubemap
 	vector<std::string> faces
@@ -243,6 +246,13 @@ bool Start() {
 	alie.diffuse = glm::vec4(0.3f, 0.3f, 0.3f, 1.0f); // Apariencia de limpieza 
 	alie.specular = glm::vec4(0.3f, 0.3f, 0.3f, 1.0f); // reflejos medios
 	alie.transparency = 1.0f;//transparencia normal
+	
+	//estacionmamineto
+	parking.ambient = glm::vec4(0.05f, 0.05f, 0.05f, 1.0f); // opaco
+	parking.diffuse = glm::vec4(0.6f, 0.6f, 0.6f, 1.0f); // Apariencia de limpieza 
+	parking.specular = glm::vec4(0.9f, 0.9f, 0.9f, 1.0f); // reflejos altos
+	parking.transparency = 1.0f;//transparencia normal
+
 	return true;
 }
 
@@ -384,7 +394,18 @@ bool Update() {
 		mLightsShader->setVec4("MaterialDiffuseColor", alie.diffuse);
 		mLightsShader->setVec4("MaterialSpecularColor", alie.specular);
 		mLightsShader->setFloat("transparency", alie.transparency);
-		alien->Draw(*mLightsShader);
+		//alien->Draw(*mLightsShader);
+
+		//estacionamiento
+		mLightsShader->setVec4("MaterialAmbientColor", parking.ambient);
+		mLightsShader->setVec4("MaterialDiffuseColor", parking.diffuse);
+		mLightsShader->setVec4("MaterialSpecularColor", parking.specular);
+		mLightsShader->setFloat("transparency", parking.transparency);
+		Estascionamineto->Draw(*mLightsShader);
+
+
+
+
 	}
 
 	glUseProgram(0);
