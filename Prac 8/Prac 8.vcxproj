@@ -107,7 +107,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\marco\source\deps\irrklang\include;C:\Users\marco\source\deps\glm\include;C:\Users\marco\source\deps\glfw\MSVC2022\include;C:\Users\marco\source\deps\glad\MSVC2022\include;C:\Users\marco\source\deps\assimp\MSVC2022\include;C:\Users\marco\source\08_IlluminationModelsII\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\marco\source\09_10_Animation\include;C:\Users\marco\source\deps\irrklang\include;C:\Users\marco\source\deps\glm\include;C:\Users\marco\source\deps\glfw\MSVC2022\include;C:\Users\marco\source\deps\glad\MSVC2022\include;C:\Users\marco\source\deps\assimp\MSVC2022\include;C:\Users\marco\source\08_IlluminationModelsII\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
