@@ -74,6 +74,8 @@ Model* TiendaRopa;
 Model* TiendaComida;
 Model* banos;
 Model* acuario;
+Model* teko;
+Model* alien;
 
 // Cubemap
 CubeMap* mainCubeMap;
@@ -84,6 +86,9 @@ Material tiendar;
 Material tiendac;
 Material bano;
 Material acuar;
+Material tek;
+Material alie;
+
 // Luces
 std::vector<Light> gLights;
 
@@ -151,6 +156,8 @@ bool Start() {
 	TiendaComida = new Model("models/IllumModels/TiendaComidaF.fbx");
 	banos = new Model("models/IllumModels/BANOF.fbx");
 	acuario= new Model("models/IllumModels/ACUARIOF.fbx");
+	teko= new Model("models/IllumModels/TEKOF.fbx");
+	alien=new Model("models/IllumModels/ALIENF.fbx");
 
 	// Cubemap
 	vector<std::string> faces
@@ -224,6 +231,18 @@ bool Start() {
 	acuar.diffuse = glm::vec4(0.9f, 0.9f, 0.9f, 1.0f); // Apariencia de limpieza 
 	acuar.specular = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f); // reflejos medios
 	acuar.transparency = 1.0f;//transparencia normal
+
+	//Teko
+	tek.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f); // opaco
+	tek.diffuse = glm::vec4(0.4f, 0.3f, 0.2f, 1.0f); // Apariencia de limpieza 
+	tek.specular = glm::vec4(0.3f, 0.3f, 0.3f, 1.0f); // reflejos medios
+	tek.transparency = 1.0f;//transparencia normal
+
+	//alien
+	alie.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f); // opaco
+	alie.diffuse = glm::vec4(0.3f, 0.3f, 0.3f, 1.0f); // Apariencia de limpieza 
+	alie.specular = glm::vec4(0.3f, 0.3f, 0.3f, 1.0f); // reflejos medios
+	alie.transparency = 1.0f;//transparencia normal
 	return true;
 }
 
@@ -350,8 +369,22 @@ bool Update() {
 		mLightsShader->setVec4("MaterialDiffuseColor", acuar.diffuse);
 		mLightsShader->setVec4("MaterialSpecularColor", acuar.specular);
 		mLightsShader->setFloat("transparency", acuar.transparency);
-		acuario->Draw(*mLightsShader);
+		//acuario->Draw(*mLightsShader);
 
+
+		//teko
+		mLightsShader->setVec4("MaterialAmbientColor", tek.ambient);
+		mLightsShader->setVec4("MaterialDiffuseColor", tek.diffuse);
+		mLightsShader->setVec4("MaterialSpecularColor", tek.specular);
+		mLightsShader->setFloat("transparency", tek.transparency);
+		//teko->Draw(*mLightsShader);
+
+		//alien
+		mLightsShader->setVec4("MaterialAmbientColor", alie.ambient);
+		mLightsShader->setVec4("MaterialDiffuseColor", alie.diffuse);
+		mLightsShader->setVec4("MaterialSpecularColor", alie.specular);
+		mLightsShader->setFloat("transparency", alie.transparency);
+		alien->Draw(*mLightsShader);
 	}
 
 	glUseProgram(0);
