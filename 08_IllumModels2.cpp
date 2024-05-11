@@ -150,7 +150,7 @@ bool Start() {
 	Puertas = new Model("models/IllumModels/PUERTASF.fbx");
 	TiendaComida = new Model("models/IllumModels/TiendaComidaF.fbx");
 	banos = new Model("models/IllumModels/BANOF.fbx");
-	acuario= new Model("models/IllumModels/ajo.fbx");
+	acuario= new Model("models/IllumModels/ACUARIOF.fbx");
 
 	// Cubemap
 	vector<std::string> faces
