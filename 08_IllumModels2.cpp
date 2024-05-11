@@ -73,6 +73,7 @@ Model* Puertas;
 Model* TiendaRopa;
 Model* TiendaComida;
 Model* banos;
+Model* acuario;
 
 // Cubemap
 CubeMap* mainCubeMap;
@@ -82,7 +83,7 @@ Material material;
 Material tiendar;
 Material tiendac;
 Material bano;
-
+Material acuar;
 // Luces
 std::vector<Light> gLights;
 
@@ -149,6 +150,7 @@ bool Start() {
 	Puertas = new Model("models/IllumModels/PUERTASF.fbx");
 	TiendaComida = new Model("models/IllumModels/TiendaComidaF.fbx");
 	banos = new Model("models/IllumModels/BANOF.fbx");
+	acuario= new Model("models/IllumModels/ajo.fbx");
 
 	// Cubemap
 	vector<std::string> faces
@@ -214,9 +216,14 @@ bool Start() {
 	bano.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f); // opaco
 	bano.diffuse = glm::vec4(0.9f, 0.9f, 0.9f, 1.0f); // Apariencia de limpieza 
 	bano.specular = glm::vec4(0.1f, 0.1f, 0.1f, 1.0f); //pocos reflejos
-	bano.transparency = 1.0f;//transparencia media
+	bano.transparency = 1.0f;//transparencia normal
 	// SoundEngine->play2D("sound/EternalGarden.mp3", true);
 
+	//acuario
+	acuar.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f); // opaco
+	acuar.diffuse = glm::vec4(0.9f, 0.9f, 0.9f, 1.0f); // Apariencia de limpieza 
+	acuar.specular = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f); // reflejos medios
+	acuar.transparency = 1.0f;//transparencia normal
 	return true;
 }
 
@@ -256,7 +263,7 @@ bool Update() {
 	float currentFrame = (float)glfwGetTime();
 	deltaTime = currentFrame - lastFrame;
 	lastFrame = currentFrame;
-
+	//alpha
 	// Procesa la entrada del teclado o mouse
 	processInput(window);
 
@@ -336,7 +343,15 @@ bool Update() {
 		mLightsShader->setVec4("MaterialDiffuseColor", bano.diffuse);
 		mLightsShader->setVec4("MaterialSpecularColor", bano.specular);
 		mLightsShader->setFloat("transparency", bano.transparency);
-		banos->Draw(*mLightsShader);
+		//banos->Draw(*mLightsShader);
+
+		//acuario
+		mLightsShader->setVec4("MaterialAmbientColor", acuar.ambient);
+		mLightsShader->setVec4("MaterialDiffuseColor", acuar.diffuse);
+		mLightsShader->setVec4("MaterialSpecularColor", acuar.specular);
+		mLightsShader->setFloat("transparency", acuar.transparency);
+		acuario->Draw(*mLightsShader);
+
 	}
 
 	glUseProgram(0);
