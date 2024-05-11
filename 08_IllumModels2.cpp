@@ -78,6 +78,7 @@ Model* teko;
 Model* alien;
 Model* Estascionamineto;
 Model* fachada;
+Model* Banqueta;
 
 // Cubemap
 CubeMap* mainCubeMap;
@@ -92,6 +93,7 @@ Material acuar;
 Material tek;
 Material alie;
 Material parking;
+Material banque;
 
 // Luces
 std::vector<Light> gLights;
@@ -164,6 +166,7 @@ bool Start() {
 	alien=new Model("models/IllumModels/TiendaAlienF.fbx");
 	Estascionamineto = new Model("models/IllumModels/parkingF.fbx");
 	fachada = new Model("models/IllumModels/fachadaF.fbx");
+	Banqueta = new Model("models/IllumModels/banquetaF.fbx");
 
 
 	// Cubemap
@@ -264,6 +267,11 @@ bool Start() {
 	parking.specular = glm::vec4(0.3f, 0.3f, 0.2f, 1.0f); // reflejos altos
 	parking.transparency = 1.0f;//transparencia normal
 
+	//banqueta
+	banque.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f); // opaco
+	banque.diffuse = glm::vec4(0.3f, 0.3f, 0.3f, 1.0f); // Apariencia de limpieza 
+	banque.specular = glm::vec4(0.8f, 0.8f, 0.8f, 1.0f); // reflejos altos
+	banque.transparency = 1.0f;//transparencia normal
 	return true;
 }
 
@@ -425,8 +433,13 @@ bool Update() {
 		mLightsShader->setVec4("MaterialSpecularColor", facha.specular);
 		mLightsShader->setFloat("transparency", facha.transparency);
 		fachada->Draw(*mLightsShader);
-
-
+		
+		//banqueta
+		mLightsShader->setVec4("MaterialAmbientColor", banque.ambient);
+		mLightsShader->setVec4("MaterialDiffuseColor", banque.diffuse);
+		mLightsShader->setVec4("MaterialSpecularColor", banque.specular);
+		mLightsShader->setFloat("transparency", banque.transparency);
+		Banqueta->Draw(*mLightsShader);
 
 
 	}
