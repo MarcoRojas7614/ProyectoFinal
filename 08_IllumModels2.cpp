@@ -89,7 +89,7 @@ Model* alien;
 Model* Estascionamineto;
 Model* fachada;
 Model* Banqueta;
-AnimatedModel* character01;
+//AnimatedModel* character01;
 float tradius = 10.0f;
 float theta = 0.0f;
 float alpha = 0.0f;
@@ -173,30 +173,30 @@ bool Start() {
 	mLightsShader = new Shader("shaders/11_PhongShaderMultLights.vs", "shaders/11_PhongShaderMultLights.fs");
 	basicShader = new Shader("shaders/10_vertex_simple.vs", "shaders/10_fragment_simple.fs");
 	cubemapShader = new Shader("shaders/10_vertex_cubemap.vs", "shaders/10_fragment_cubemap.fs");
-	//TiendaRopa = new Model("models/IllumModels/TiendaRopaF.fbx");
-	proceduralShader = new Shader("shaders/12_ProceduralAnimation.vs", "shaders/12_ProceduralAnimation.fs");
-	wavesShader = new Shader("shaders/13_wavesAnimation.vs", "shaders/13_wavesAnimation.fs");
+	TiendaRopa = new Model("models/IllumModels/TiendaRopaF.fbx");
+	//proceduralShader = new Shader("shaders/12_ProceduralAnimation.vs", "shaders/12_ProceduralAnimation.fs");
+	//wavesShader = new Shader("shaders/13_wavesAnimation.vs", "shaders/13_wavesAnimation.fs");
 	Puertas = new Model("models/IllumModels/PUERTASF.fbx");
-	dynamicShader = new Shader("shaders/10_vertex_skinning-IT.vs", "shaders/10_fragment_skinning-IT.fs");
-	//TiendaComida = new Model("models/IllumModels/TiendaComidaF.fbx");
-	//banos = new Model("models/IllumModels/BANOF.fbx");
-	//acuario = new Model("models/IllumModels/acuarioF.fbx");
-	//teko = new Model("models/IllumModels/TEKOF.fbx");
-	//alien = new Model("models/IllumModels/TiendaAlienF.fbx");
-	//Estascionamineto = new Model("models/IllumModels/parkingF.fbx");
-	//fachada = new Model("models/IllumModels/fachadaF.fbx");
-	//Banqueta = new Model("models/IllumModels/banquetaF.fbx");
-	character01 = new AnimatedModel("models/IllumModels/KAYA.fbx");
+	//dynamicShader = new Shader("shaders/10_vertex_skinning-IT.vs", "shaders/10_fragment_skinning-IT.fs");
+	TiendaComida = new Model("models/IllumModels/TiendaComidaF.fbx");
+	banos = new Model("models/IllumModels/BANOF.fbx");
+	acuario = new Model("models/IllumModels/acuarioF.fbx");
+	teko = new Model("models/IllumModels/TEKOF.fbx");
+	alien = new Model("models/IllumModels/TiendaAlienF.fbx");
+	Estascionamineto = new Model("models/IllumModels/parkingF.fbx");
+	fachada = new Model("models/IllumModels/fachadaF.fbx");
+	Banqueta = new Model("models/IllumModels/banquetaF.fbx");
+	//character01 = new AnimatedModel("models/IllumModels/animaF.fbx");
 
 	// Cubemap
 	vector<std::string> faces
 	{
-		"textures/cubemap/01/posx.png",
-		"textures/cubemap/01/negx.png",
-		"textures/cubemap/01/posy.png",
-		"textures/cubemap/01/negy.png",
-		"textures/cubemap/01/posz.png",
-		"textures/cubemap/01/negz.png"
+		"textures/cubemap/03/posx.jpg",
+		"textures/cubemap/03/negx.jpg",
+		"textures/cubemap/03/posy.jpg",
+		"textures/cubemap/03/negy.jpg",
+		"textures/cubemap/03/posz.jpg",
+		"textures/cubemap/03/negz.jpg"
 	};
 	mainCubeMap = new CubeMap();
 	mainCubeMap->loadCubemap(faces);
@@ -205,12 +205,12 @@ bool Start() {
 	/*
 	Light light01;
 	light01.Position = glm::vec3(5.0f, 0.0f, -5.0f);
-	light01.Color = glm::vec4(0.80f, 0.80f, 0.80f, 1.0f);
+	light01.Color = glm::vec4(0.1f, 0.0f, 0.0f, 1.0f);
 	light01.Power = glm::vec4(40.0f, 40.0f, 40.0f, 1.0f);
 	gLights.push_back(light01);
 	*/
 	Light light02;
-	light02.Position = glm::vec3(5.0f, 5.0f, -5.0f);
+	light02.Position = glm::vec3(0.0f, 0.0f, 0.0f);
 	light02.Color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	light02.Power = glm::vec4(10.0f, 10.0f, 10.0f, 1.0f);
 	gLights.push_back(light02);
@@ -227,7 +227,7 @@ bool Start() {
 	light04.Power = glm::vec4(60.0f, 60.0f, 60.0f, 1.0f);
 	gLights.push_back(light04);*/
 
-	lightDummy = new Model("models/IllumModels/lightDummy.fbx");
+	lightDummy = new Model("models/IllumModels/moon.fbx");
 
 	// Configuración de propiedades cristal
 	// Tabla: http://devernay.free.fr/cours/opengl/materials.html
@@ -235,13 +235,13 @@ bool Start() {
 	material.diffuse = glm::vec4(0.0f, 0.50980392f, 0.50980392f, 0.5f); // Color difuso cian
 	material.specular = glm::vec4(0.50196078f, 0.50196078f, 0.50196078f, 0.5f); // Color especular blanco brillante
 	material.transparency = 0.5f;//transparencia media
-	/*
+	
 	//tiendaropa
 	tiendar.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f); // colores mate
 	tiendar.diffuse = glm::vec4(0.8f, 0.8f, 0.8f, 1.0f); // 
 	tiendar.specular = glm::vec4(0.1f, 0.1f, 0.1f, 0.5f); //
 	tiendar.transparency = 1.0f;//transparencia normal
-
+	
 
 	//tiendacomida
 	tiendac.ambient = glm::vec4(0.1f, 0.1f, 0.1f, 1.0f); // colores brilloso
@@ -395,14 +395,14 @@ bool Update() {
 		//puerta 2
 		Puertas->Draw(*mLightsShader);
 		*/
-		/*
+		
 		mLightsShader->setVec4("MaterialAmbientColor", tiendar.ambient);
 		mLightsShader->setVec4("MaterialDiffuseColor", tiendar.diffuse);
 		mLightsShader->setVec4("MaterialSpecularColor", tiendar.specular);
 		mLightsShader->setFloat("transparency", tiendar.transparency);
 
 		TiendaRopa->Draw(*mLightsShader);
-
+		
 		//tienda de comida
 		mLightsShader->setVec4("MaterialAmbientColor", tiendac.ambient);
 		mLightsShader->setVec4("MaterialDiffuseColor", tiendac.diffuse);
@@ -460,7 +460,7 @@ bool Update() {
 		mLightsShader->setVec4("MaterialSpecularColor", banque.specular);
 		mLightsShader->setFloat("transparency", banque.transparency);
 		Banqueta->Draw(*mLightsShader);
-		*/
+		
 
 	}
 
@@ -468,7 +468,7 @@ bool Update() {
 
 	// Deplegamos los indicadores auxiliares de cada fuente de iluminación
 	
-
+	/*
 	{
 		character01->UpdateAnimation(deltaTime);
 
@@ -493,7 +493,7 @@ bool Update() {
 		character01->Draw(*dynamicShader);
 	}
 	glUseProgram(0);
-
+	*/
 	// glfw: swap buffers 
 	glfwSwapBuffers(window);
 	glfwPollEvents();
