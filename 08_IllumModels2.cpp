@@ -92,7 +92,11 @@ Model* fachada;
 Model* Banqueta;
 Model* puertaizq;
 Model* puertader;
-//AnimatedModel* character01;
+Model* puertaFD;
+Model* moon;
+
+
+AnimatedModel* kirbi;
 float tradius = 10.0f;
 float theta = 0.0f;
 float alpha = 0.0f;
@@ -177,10 +181,10 @@ bool Start() {
 	basicShader = new Shader("shaders/10_vertex_simple.vs", "shaders/10_fragment_simple.fs");
 	cubemapShader = new Shader("shaders/10_vertex_cubemap.vs", "shaders/10_fragment_cubemap.fs");
 	TiendaRopa = new Model("models/IllumModels/TiendaRopaF.fbx");
-	//proceduralShader = new Shader("shaders/12_ProceduralAnimation.vs", "shaders/12_ProceduralAnimation.fs");
-	//wavesShader = new Shader("shaders/13_wavesAnimation.vs", "shaders/13_wavesAnimation.fs");
+	proceduralShader = new Shader("shaders/12_ProceduralAnimation.vs", "shaders/12_ProceduralAnimation.fs");
+	wavesShader = new Shader("shaders/13_wavesAnimation.vs", "shaders/13_wavesAnimation.fs");
 	Puertas = new Model("models/IllumModels/PUERTASF.fbx");
-	//dynamicShader = new Shader("shaders/10_vertex_skinning-IT.vs", "shaders/10_fragment_skinning-IT.fs");
+	dynamicShader = new Shader("shaders/10_vertex_skinning-IT.vs", "shaders/10_fragment_skinning-IT.fs");
 	//TiendaComida = new Model("models/IllumModels/TiendaComidaF.fbx");
 	//banos = new Model("models/IllumModels/BANOF.fbx");
 	//acuario = new Model("models/IllumModels/acuarioF.fbx");
@@ -189,9 +193,11 @@ bool Start() {
 	//Estascionamineto = new Model("models/IllumModels/parkingF.fbx");
 	fachada = new Model("models/IllumModels/fachadaF.fbx");
 	//Banqueta = new Model("models/IllumModels/banquetaF.fbx");
-	//character01 = new AnimatedModel("models/IllumModels/animaF.fbx");
+	//kirbi = new AnimatedModel("models/IllumModels/camina.fbx");
 	puertaizq= new Model("models/IllumModels/puertaizq.fbx");
 	puertader = new Model("models/IllumModels/puertader.fbx");
+	puertaFD = new Model("models/IllumModels/PUERTASFD.fbx");
+	moon = new Model("models/IllumModels/moon.fbx");
 	// Cubemap
 	vector<std::string> faces
 	{
@@ -431,7 +437,7 @@ bool Update() {
 		mLightsShader->setVec4("MaterialDiffuseColor", tek.diffuse);
 		mLightsShader->setVec4("MaterialSpecularColor", tek.specular);
 		mLightsShader->setFloat("transparency", tek.transparency);
-		//teko->Draw(*mLightsShader);
+		teko->Draw(*mLightsShader);
 		//puerta iz	
 		
 		//alien
@@ -470,6 +476,22 @@ bool Update() {
 		model = glm::rotate(model, glm::radians(00.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		mLightsShader->setMat4("model", model);
 		Puertas->Draw(*mLightsShader);
+
+		model = glm::mat4(1.0f);//reinicio de matriz 
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));//rotacion para vista adecuada
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	//gurdamos escla
+		// Aplicamos propiedades materiales de cristal
+		mLightsShader->setVec4("MaterialAmbientColor", material.ambient);
+		mLightsShader->setVec4("MaterialDiffuseColor", material.diffuse);
+		mLightsShader->setVec4("MaterialSpecularColor", material.specular);
+		mLightsShader->setFloat("transparency", material.transparency);
+
+		model = glm::translate(model, glm::vec3(5.0771f, 0.0f, 0.0f));
+		// Efecto de puerta con bisagra
+		model = glm::rotate(model, glm::radians(door_neg), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(00.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		mLightsShader->setMat4("model", model);
+		puertaFD->Draw(*mLightsShader);
 			
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
 		//tineda TEKO
@@ -492,6 +514,11 @@ bool Update() {
 		model = glm::rotate(model, glm::radians(door_neg), glm::vec3(0.0f, 0.0f, 1.0f));
 		//model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		mLightsShader->setMat4("model", model);
+		// Aplicamos propiedades materiales de cristal
+		mLightsShader->setVec4("MaterialAmbientColor", material.ambient);
+		mLightsShader->setVec4("MaterialDiffuseColor", material.diffuse);
+		mLightsShader->setVec4("MaterialSpecularColor", material.specular);
+		mLightsShader->setFloat("transparency", material.transparency);
 		puertader->Draw(*mLightsShader);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		model = glm::mat4(1.0f);//reinicio de matriz acuario
@@ -600,12 +627,43 @@ bool Update() {
 	}
 
 	glUseProgram(0);
+	
+	{
+		// Activamos el shader de Phong
+		proceduralShader->use();
+
+		// Activamos para objetos transparentes
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		// Aplicamos transformaciones de proyección y cámara (si las hubiera)
+		proceduralShader->setMat4("projection", projection);
+		proceduralShader->setMat4("view", view);
+
+		// Aplicamos transformaciones del modelo
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(17.0f, 8.50f, -15.0f));
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		proceduralShader->setMat4("model", model);
+
+		proceduralShader->setFloat("time", proceduralTime);
+		proceduralShader->setFloat("radius", 4.0f);
+		proceduralShader->setFloat("height", 1.0f);
+
+		moon->Draw(*proceduralShader);
+		proceduralTime += 0.001;
+
+	}
+
+	glUseProgram(0);
+	
 
 	// Deplegamos los indicadores auxiliares de cada fuente de iluminación
-	
 	/*
+	
 	{
-		character01->UpdateAnimation(deltaTime);
+		kirbi->UpdateAnimation(deltaTime);
 
 		// Activación del shader del personaje
 		dynamicShader->use();
@@ -622,10 +680,10 @@ bool Update() {
 
 		dynamicShader->setMat4("model", model);
 
-		dynamicShader->setMat4("gBones", MAX_RIGGING_BONES, character01->gBones);
+		dynamicShader->setMat4("gBones", MAX_RIGGING_BONES, kirbi->gBones);
 
 		// Dibujamos el modelo
-		character01->Draw(*dynamicShader);
+		kirbi->Draw(*dynamicShader);
 	}
 	glUseProgram(0);
 	*/
