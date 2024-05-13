@@ -47,7 +47,8 @@ const unsigned int SCR_WIDTH = 1024;
 const unsigned int SCR_HEIGHT = 720;
 
 // Definición de cámara (posición en XYZ)
-Camera camera(glm::vec3(0.0f, 2.0f, 10.0f));
+Camera camera(glm::vec3(0.0f, 8.0f, 0.0f));
+Camera camera2do(glm::vec3(0.0f, 0.0f, 0.0f));
 
 // Controladores para el movimiento del mouse
 float lastX = SCR_WIDTH / 2.0f;
@@ -750,8 +751,12 @@ void processInput(GLFWwindow* window)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
 
 	// Character movement
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+	if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS) {
+		camera.Position = glm::vec3(0.0f, 8.0f, 6.0f);
 
+	}
+	if (glfwGetKey(window, GLFW_KEY_F2) == GLFW_PRESS) {
+		camera.Position = glm::vec3(-10.0f, 25.3f, -45.0f);
 
 	}
 	if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS) {
