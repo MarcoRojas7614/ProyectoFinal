@@ -472,6 +472,7 @@ bool Update() {
 		Puertas->Draw(*mLightsShader);
 			
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
+		//tineda TEKO
 		model = glm::mat4(1.0f);//reinicio de matriz 
 		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));//rotacion para vista adecuada
 		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	//gurdamos escla
@@ -482,6 +483,16 @@ bool Update() {
 		//model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		mLightsShader->setMat4("model", model);
 		puertaizq->Draw(*mLightsShader);
+
+		model = glm::mat4(1.0f);//reinicio de matriz 
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));//rotacion para vista adecuada
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	//gurdamos escla
+		model = glm::translate(model, glm::vec3(6.956f, 11.041f, 0.05f));
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(door_neg), glm::vec3(0.0f, 0.0f, 1.0f));
+		//model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		mLightsShader->setMat4("model", model);
+		puertader->Draw(*mLightsShader);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		model = glm::mat4(1.0f);//reinicio de matriz acuario
 		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));//rotacion para vista adecuada
@@ -493,6 +504,18 @@ bool Update() {
 		
 		mLightsShader->setMat4("model", model);
 		puertaizq->Draw(*mLightsShader);
+
+		model = glm::mat4(1.0f);//reinicio de matriz  Comida der
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));//rotacion para vista adecuada
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	//gurdamos escla
+
+		model = glm::translate(model, glm::vec3(4.017f, 61.099f,17.439f));
+		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(door_neg), glm::vec3(0.0f, 0.0f, 1.0f));
+		//model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		mLightsShader->setMat4("model", model);
+		puertader->Draw(*mLightsShader);
+
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		model = glm::mat4(1.0f);//reinicio de matriz  ropa
 		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));//rotacion para vista adecuada
@@ -504,6 +527,16 @@ bool Update() {
 		//model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		mLightsShader->setMat4("model", model);
 		puertaizq->Draw(*mLightsShader);
+		model = glm::mat4(1.0f);//reinicio de matriz  
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));//rotacion para vista adecuada
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	//gurdamos escla
+
+		model = glm::translate(model, glm::vec3(-6.913f, 19.502f, 0.097f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(door_neg), glm::vec3(0.0f, 0.0f, 1.0f));
+		//model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		mLightsShader->setMat4("model", model);
+		puertader->Draw(*mLightsShader);
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		model = glm::mat4(1.0f);//reinicio de matriz  Comida izq
@@ -521,8 +554,8 @@ bool Update() {
 		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));//rotacion para vista adecuada
 		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	//gurdamos escla
 
-		model = glm::translate(model, glm::vec3(5.079f, 0.0f, 0.000f));
-		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::translate(model, glm::vec3(6.893f, 70.89f, 0.009f));
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::rotate(model, glm::radians(door_neg ), glm::vec3(0.0f, 0.0f, 1.0f));
 		//model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		mLightsShader->setMat4("model", model);
@@ -540,7 +573,16 @@ bool Update() {
 		mLightsShader->setMat4("model", model);
 		puertaizq->Draw(*mLightsShader);
 
+		model = glm::mat4(1.0f);//reinicio de matriz  Comida der
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));//rotacion para vista adecuada
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	//gurdamos escla
 
+		model = glm::translate(model, glm::vec3(-3.5216f,29.314f, 17.238f));
+		model = glm::rotate(model, glm::radians(-180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(door_neg), glm::vec3(0.0f, 0.0f, 1.0f));
+		//model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		mLightsShader->setMat4("model", model);
+		puertader->Draw(*mLightsShader);
 
 
 
