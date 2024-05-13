@@ -96,6 +96,7 @@ Model* puertader;
 Model* puertaFD;
 Model* moon;
 Model* mesa;
+Model* sol;
 
 
 AnimatedModel* kirbi;
@@ -120,6 +121,7 @@ Material alie;
 Material parking;
 Material banque;
 Material mes;
+Material s;
 
 // Luces
 std::vector<Light> gLights;
@@ -202,6 +204,7 @@ bool Start() {
 	puertaFD = new Model("models/IllumModels/PUERTASFD.fbx");
 	//moon = new Model("models/IllumModels/moon.fbx");
 	mesa= new Model("models/IllumModels/mesa.fbx");
+	sol= new Model("models/IllumModels/sol.fbx");
 	// Cubemap
 	vector<std::string> faces
 	{
@@ -323,6 +326,11 @@ bool Start() {
 	mes.diffuse = glm::vec4(0.4f, 0.4f, 0.4f, 1.0f); // Apariencia de limpieza 
 	mes.specular = glm::vec4(0.8f, 0.8f, 0.8f, 1.0f); // reflejos altos
 	mes.transparency = 1.0f;//transparencia normal*/
+	//sol
+	s.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f); // opaco
+	s.diffuse = glm::vec4(0.4f, 0.4f, 0.4f, 1.0f); // Apariencia de limpieza 
+	s.specular = glm::vec4(0.8f, 0.8f, 0.8f, 1.0f); // reflejos altos
+	s.transparency = 1.0f;//transparencia normal*/
 	return true;
 }
 
@@ -479,7 +487,12 @@ bool Update() {
 		mLightsShader->setVec4("MaterialSpecularColor", facha.specular);
 		mLightsShader->setFloat("transparency", facha.transparency);
 		fachada->Draw(*mLightsShader);
-
+		//sol
+		mLightsShader->setVec4("MaterialAmbientColor", s.ambient);
+		mLightsShader->setVec4("MaterialDiffuseColor", s.diffuse);
+		mLightsShader->setVec4("MaterialSpecularColor", s.specular);
+		mLightsShader->setFloat("transparency", s.transparency);
+		//sol->Draw(*mLightsShader);
 		//banqueta
 		mLightsShader->setVec4("MaterialAmbientColor", banque.ambient);
 		mLightsShader->setVec4("MaterialDiffuseColor", banque.diffuse);
@@ -703,6 +716,38 @@ bool Update() {
 
 	// Deplegamos los indicadores auxiliares de cada fuente de iluminación
 	
+	{
+		// Activamos el shader de Phong
+		wavesShader->use();
+
+		// Activamos para objetos transparentes
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		// Aplicamos transformaciones de proyección y cámara (si las hubiera)
+		wavesShader->setMat4("projection", projection);
+		wavesShader->setMat4("view", view);
+
+		// Aplicamos transformaciones del modelo
+		glm::mat4 model = glm::mat4(1.0f);
+		//glm::vec3(58.0f, 300.0f, -44.0f);
+		model = glm::translate(model, glm::vec3(58.0f, 300.0f, -100.0f));
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
+		wavesShader->setMat4("model", model);
+
+		wavesShader->setFloat("time", wavesTime);
+		wavesShader->setFloat("radius", 5.0f);
+		wavesShader->setFloat("height", 5.0f);
+
+		sol->Draw(*wavesShader);
+		wavesTime += 0.01;
+
+	}
+
+	glUseProgram(0);
+	
+
 	/*
 	{
 		kirbi->UpdateAnimation(deltaTime);
