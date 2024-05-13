@@ -66,6 +66,7 @@ float     trdpersonOffset = 1.5f;
 float     scaleV = 0.025f;
 float     rotateCharacter = 0.0f;
 float	  door_offset = 0.0f;
+float	  door_neg = 0.0f;
 float	  door_rotation = 0.0f;
 
 // Shaders
@@ -90,6 +91,7 @@ Model* Estascionamineto;
 Model* fachada;
 Model* Banqueta;
 Model* puertaizq;
+Model* puertader;
 //AnimatedModel* character01;
 float tradius = 10.0f;
 float theta = 0.0f;
@@ -174,7 +176,7 @@ bool Start() {
 	mLightsShader = new Shader("shaders/11_PhongShaderMultLights.vs", "shaders/11_PhongShaderMultLights.fs");
 	basicShader = new Shader("shaders/10_vertex_simple.vs", "shaders/10_fragment_simple.fs");
 	cubemapShader = new Shader("shaders/10_vertex_cubemap.vs", "shaders/10_fragment_cubemap.fs");
-	//TiendaRopa = new Model("models/IllumModels/TiendaRopaF.fbx");
+	TiendaRopa = new Model("models/IllumModels/TiendaRopaF.fbx");
 	//proceduralShader = new Shader("shaders/12_ProceduralAnimation.vs", "shaders/12_ProceduralAnimation.fs");
 	//wavesShader = new Shader("shaders/13_wavesAnimation.vs", "shaders/13_wavesAnimation.fs");
 	Puertas = new Model("models/IllumModels/PUERTASF.fbx");
@@ -189,6 +191,7 @@ bool Start() {
 	//Banqueta = new Model("models/IllumModels/banquetaF.fbx");
 	//character01 = new AnimatedModel("models/IllumModels/animaF.fbx");
 	puertaizq= new Model("models/IllumModels/puertaizq.fbx");
+	puertader = new Model("models/IllumModels/puertader.fbx");
 	// Cubemap
 	vector<std::string> faces
 	{
@@ -236,7 +239,7 @@ bool Start() {
 	material.diffuse = glm::vec4(0.0f, 0.50980392f, 0.50980392f, 0.5f); // Color difuso cian
 	material.specular = glm::vec4(0.50196078f, 0.50196078f, 0.50196078f, 0.5f); // Color especular blanco brillante
 	material.transparency = 0.5f;//transparencia media
-	/*
+	
 	//tiendaropa
 	tiendar.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f); // colores mate
 	tiendar.diffuse = glm::vec4(0.8f, 0.8f, 0.8f, 1.0f); // 
@@ -245,11 +248,11 @@ bool Start() {
 	
 
 	//tiendacomida
-	tiendac.ambient = glm::vec4(0.1f, 0.1f, 0.1f, 1.0f); // colores brilloso
-	tiendac.diffuse = glm::vec4(0.9f, 0.9f, 0.9f, 1.0f); // Apariencia de limpieza 
-	tiendac.specular = glm::vec4(0.5f, 0.5f, 0.5f, 0.5f); //brillo moderado
-	tiendac.transparency = 1.0f;//transparencia media
-
+	//tiendac.ambient = glm::vec4(0.1f, 0.1f, 0.1f, 1.0f); // colores brilloso
+	//tiendac.diffuse = glm::vec4(0.9f, 0.9f, 0.9f, 1.0f); // Apariencia de limpieza 
+	//tiendac.specular = glm::vec4(0.5f, 0.5f, 0.5f, 0.5f); //brillo moderado
+	//tiendac.transparency = 1.0f;//transparencia media
+	/*
 	//banos
 	bano.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f); // opaco
 	bano.diffuse = glm::vec4(0.9f, 0.9f, 0.9f, 1.0f); // Apariencia de limpieza 
@@ -259,7 +262,7 @@ bool Start() {
 	*/
 	//acuario
 	//acuar.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f); // opaco
-	////acuar.diffuse = glm::vec4(0.9f, 0.9f, 0.9f, 1.0f); // Apariencia de limpieza 
+	//acuar.diffuse = glm::vec4(0.9f, 0.9f, 0.9f, 1.0f); // Apariencia de limpieza 
 	//acuar.specular = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f); // reflejos medios
 	//acuar.transparency = 1.0f;//transparencia normal
 	
@@ -268,13 +271,13 @@ bool Start() {
 	tek.diffuse = glm::vec4(0.4f, 0.3f, 0.2f, 1.0f); // Apariencia de limpieza 
 	tek.specular = glm::vec4(0.3f, 0.3f, 0.3f, 1.0f); // reflejos medios
 	tek.transparency = 1.0f;//transparencia normal
-	/*
+	
 	//alien
-	alie.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f); // opaco
-	alie.diffuse = glm::vec4(0.3f, 0.3f, 0.3f, 1.0f); // Apariencia de limpieza 
-	alie.specular = glm::vec4(0.3f, 0.3f, 0.3f, 1.0f); // reflejos medios
-	alie.transparency = 1.0f;//transparencia normal
-
+	//alie.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f); // opaco
+	//alie.diffuse = glm::vec4(0.3f, 0.3f, 0.3f, 1.0f); // Apariencia de limpieza 
+	//alie.specular = glm::vec4(0.3f, 0.3f, 0.3f, 1.0f); // reflejos medios
+	//alie.transparency = 1.0f;//transparencia normal
+	/*
 	//estacionmamineto
 	parking.ambient = glm::vec4(0.05f, 0.05f, 0.05f, 1.0f); // opaco
 	parking.diffuse = glm::vec4(0.6f, 0.6f, 0.6f, 1.0f); // Apariencia de limpieza 
@@ -394,10 +397,10 @@ bool Update() {
 		Puertas->Draw(*mLightsShader);
 		*/
 		
-		//mLightsShader->setVec4("MaterialAmbientColor", tiendar.ambient);
-		//mLightsShader->setVec4("MaterialDiffuseColor", tiendar.diffuse);
-		//mLightsShader->setVec4("MaterialSpecularColor", tiendar.specular);
-		//mLightsShader->setFloat("transparency", tiendar.transparency);
+		mLightsShader->setVec4("MaterialAmbientColor", tiendar.ambient);
+		mLightsShader->setVec4("MaterialDiffuseColor", tiendar.diffuse);
+		mLightsShader->setVec4("MaterialSpecularColor", tiendar.specular);
+		mLightsShader->setFloat("transparency", tiendar.transparency);
 
 		//TiendaRopa->Draw(*mLightsShader);
 		
@@ -428,12 +431,12 @@ bool Update() {
 		mLightsShader->setVec4("MaterialDiffuseColor", tek.diffuse);
 		mLightsShader->setVec4("MaterialSpecularColor", tek.specular);
 		mLightsShader->setFloat("transparency", tek.transparency);
-		teko->Draw(*mLightsShader);
+		//teko->Draw(*mLightsShader);
 		//puerta iz	
 		
 		//alien
 		//mLightsShader->setVec4("MaterialAmbientColor", alie.ambient);
-		//mLightsShader->setVec4("MaterialDiffuseColor", alie.diffuse);
+		////mLightsShader->setVec4("MaterialDiffuseColor", alie.diffuse);
 		//mLightsShader->setVec4("MaterialSpecularColor", alie.specular);
 		//mLightsShader->setFloat("transparency", alie.transparency);
 		//alien->Draw(*mLightsShader);
@@ -469,7 +472,7 @@ bool Update() {
 		Puertas->Draw(*mLightsShader);
 			
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
-		model = glm::mat4(1.0f);//reinicio de matriz
+		model = glm::mat4(1.0f);//reinicio de matriz 
 		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));//rotacion para vista adecuada
 		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	//gurdamos escla
 		
@@ -480,20 +483,62 @@ bool Update() {
 		mLightsShader->setMat4("model", model);
 		puertaizq->Draw(*mLightsShader);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		model = glm::mat4(1.0f);//reinicio de matriz
+		model = glm::mat4(1.0f);//reinicio de matriz acuario
 		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));//rotacion para vista adecuada
 		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	//gurdamos escla
 
 		model = glm::translate(model, glm::vec3(-4.018f, 61.099f, 17.439f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::rotate(model, glm::radians(door_rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+		
+		mLightsShader->setMat4("model", model);
+		puertaizq->Draw(*mLightsShader);
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		model = glm::mat4(1.0f);//reinicio de matriz  ropa
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));//rotacion para vista adecuada
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	//gurdamos escla
+
+		model = glm::translate(model, glm::vec3(-6.913f, 11.231f, 0.097f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(door_rotation), glm::vec3(0.0f, 0.0f, 1.0f));
 		//model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		mLightsShader->setMat4("model", model);
 		puertaizq->Draw(*mLightsShader);
 
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		model = glm::mat4(1.0f);//reinicio de matriz  Comida izq
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));//rotacion para vista adecuada
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	//gurdamos escla
 
+		model = glm::translate(model, glm::vec3(6.893f, 78.98f, 0.009f));
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(door_rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+		//model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		mLightsShader->setMat4("model", model);
+		puertaizq->Draw(*mLightsShader);
 
+		model = glm::mat4(1.0f);//reinicio de matriz  Comida der
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));//rotacion para vista adecuada
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	//gurdamos escla
 
+		model = glm::translate(model, glm::vec3(5.079f, 0.0f, 0.000f));
+		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(door_neg ), glm::vec3(0.0f, 0.0f, 1.0f));
+		//model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		mLightsShader->setMat4("model", model);
+		puertader->Draw(*mLightsShader);
+
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		model = glm::mat4(1.0f);//reinicio de matriz  alien
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));//rotacion para vista adecuada
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	//gurdamos escla
+
+		model = glm::translate(model, glm::vec3(4.4402f, 29.314f, 17.238f));
+		model = glm::rotate(model, glm::radians(-180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(door_rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+		//model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		mLightsShader->setMat4("model", model);
+		puertaizq->Draw(*mLightsShader);
 
 
 
@@ -591,13 +636,18 @@ void processInput(GLFWwindow* window)
 	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
 
 	}//rotacion de puertas
-	if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
-		door_rotation += 0.1f;
-		//door_rotation =90.0f;
-	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
-		door_rotation -= 0.1f;
-		//door_rotation =0.0f;
-
+	if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {
+		//door_rotation += 0.1f;
+		door_neg = -90.0f;
+		door_rotation = 90.0f;
+		//door_neg -= 0.1f;
+	}
+	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS){
+		//door_rotation -= 0.1f;
+		door_rotation =0.0f;
+		//door_neg += 0.1f;
+		door_neg = 0.0f;
+		}
 }
 
 // glfw: Actualizamos el puerto de vista si hay cambios del tamaño
