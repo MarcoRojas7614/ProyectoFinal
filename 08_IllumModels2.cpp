@@ -193,7 +193,7 @@ bool Start() {
 	//Estascionamineto = new Model("models/IllumModels/parkingF.fbx");
 	fachada = new Model("models/IllumModels/fachadaF.fbx");
 	//Banqueta = new Model("models/IllumModels/banquetaF.fbx");
-	//kirbi = new AnimatedModel("models/IllumModels/camina.fbx");
+	kirbi = new AnimatedModel("models/IllumModels/Pea.fbx");
 	puertaizq= new Model("models/IllumModels/puertaizq.fbx");
 	puertader = new Model("models/IllumModels/puertader.fbx");
 	puertaFD = new Model("models/IllumModels/PUERTASFD.fbx");
@@ -660,7 +660,7 @@ bool Update() {
 	
 
 	// Deplegamos los indicadores auxiliares de cada fuente de iluminación
-	/*
+	
 	
 	{
 		kirbi->UpdateAnimation(deltaTime);
@@ -686,7 +686,7 @@ bool Update() {
 		kirbi->Draw(*dynamicShader);
 	}
 	glUseProgram(0);
-	*/
+	
 	// glfw: swap buffers 
 	glfwSwapBuffers(window);
 	glfwPollEvents();
