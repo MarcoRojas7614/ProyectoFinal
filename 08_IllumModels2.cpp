@@ -185,11 +185,11 @@ bool Start() {
 	wavesShader = new Shader("shaders/13_wavesAnimation.vs", "shaders/13_wavesAnimation.fs");
 	Puertas = new Model("models/IllumModels/PUERTASF.fbx");
 	dynamicShader = new Shader("shaders/10_vertex_skinning-IT.vs", "shaders/10_fragment_skinning-IT.fs");
-	TiendaComida = new Model("models/IllumModels/TiendaComidaF.fbx");
-	banos = new Model("models/IllumModels/BANOF.fbx");
-	acuario = new Model("models/IllumModels/acuarioF.fbx");
-	teko = new Model("models/IllumModels/TEKOF.fbx");
-	alien = new Model("models/IllumModels/TiendaAlienF.fbx");
+	//TiendaComida = new Model("models/IllumModels/TiendaComidaF.fbx");
+	//banos = new Model("models/IllumModels/BANOF.fbx");
+	//acuario = new Model("models/IllumModels/acuarioF.fbx");
+	//teko = new Model("models/IllumModels/TEKOF.fbx");
+	//alien = new Model("models/IllumModels/TiendaAlienF.fbx");
 	//Estascionamineto = new Model("models/IllumModels/parkingF.fbx");
 	fachada = new Model("models/IllumModels/fachadaF.fbx");
 	//Banqueta = new Model("models/IllumModels/banquetaF.fbx");
@@ -257,7 +257,7 @@ bool Start() {
 	material.diffuse = glm::vec4(0.0f, 0.50980392f, 0.50980392f, 0.5f); // Color difuso cian
 	material.specular = glm::vec4(0.50196078f, 0.50196078f, 0.50196078f, 0.5f); // Color especular blanco brillante
 	material.transparency = 0.5f;//transparencia media
-	
+	/*
 	//tiendaropa
 	tiendar.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f); // colores mate
 	tiendar.diffuse = glm::vec4(0.8f, 0.8f, 0.8f, 1.0f); // 
@@ -421,7 +421,7 @@ bool Update() {
 		mLightsShader->setFloat("transparency", tiendar.transparency);
 
 		TiendaRopa->Draw(*mLightsShader);
-		
+		/*
 		//tienda de comida
 		mLightsShader->setVec4("MaterialAmbientColor", tiendac.ambient);
 		mLightsShader->setVec4("MaterialDiffuseColor", tiendac.diffuse);
@@ -466,7 +466,7 @@ bool Update() {
 		//mLightsShader->setFloat("transparency", parking.transparency);
 		//Estascionamineto->Draw(*mLightsShader);
 
-
+		*/
 		//fachada
 		mLightsShader->setVec4("MaterialAmbientColor", facha.ambient);
 		mLightsShader->setVec4("MaterialDiffuseColor", facha.diffuse);
