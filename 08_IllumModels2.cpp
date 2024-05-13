@@ -69,6 +69,7 @@ float     rotateCharacter = 0.0f;
 float	  door_offset = 0.0f;
 float	  door_neg = 0.0f;
 float	  door_rotation = 0.0f;
+float		pluma = 00.0f;
 
 // Shaders
 Shader* cubemapShader;
@@ -97,6 +98,8 @@ Model* puertaFD;
 Model* moon;
 Model* mesa;
 Model* sol;
+Model* Poste;
+Model* plumilla;
 
 
 AnimatedModel* kirbi;
@@ -122,6 +125,7 @@ Material parking;
 Material banque;
 Material mes;
 Material s;
+Material a;
 
 // Luces
 std::vector<Light> gLights;
@@ -192,19 +196,21 @@ bool Start() {
 	dynamicShader = new Shader("shaders/10_vertex_skinning-IT.vs", "shaders/10_fragment_skinning-IT.fs");
 	TiendaComida = new Model("models/IllumModels/TiendaComidaF.fbx");
 	banos = new Model("models/IllumModels/BANOF.fbx");
-	//acuario = new Model("models/IllumModels/acuarioF.fbx");
+	acuario = new Model("models/IllumModels/acuarioF.fbx");
 	teko = new Model("models/IllumModels/TEKOF.fbx");
-	//alien = new Model("models/IllumModels/TiendaAlienF.fbx");
-	//Estascionamineto = new Model("models/IllumModels/parkingF.fbx");
+	alien = new Model("models/IllumModels/TiendaAlienF.fbx");
+	Estascionamineto = new Model("models/IllumModels/parkingF.fbx");
 	fachada = new Model("models/IllumModels/fachadaF.fbx");
 	Banqueta = new Model("models/IllumModels/banquetaF.fbx");
-	//kirbi = new AnimatedModel("models/IllumModels/circulo.fbx");
+	kirbi = new AnimatedModel("models/IllumModels/circulo.fbx");
 	puertaizq= new Model("models/IllumModels/puertaizq.fbx");
 	puertader = new Model("models/IllumModels/puertader.fbx");
 	puertaFD = new Model("models/IllumModels/PUERTASFD.fbx");
-	//moon = new Model("models/IllumModels/moon.fbx");
+	moon = new Model("models/IllumModels/moon.fbx");
 	mesa= new Model("models/IllumModels/mesa.fbx");
 	sol= new Model("models/IllumModels/sol.fbx");
+	Poste =new Model("models/IllumModels/poste.fbx");
+	plumilla = new Model("models/IllumModels/pluma.fbx");
 	// Cubemap
 	vector<std::string> faces
 	{
@@ -284,31 +290,31 @@ bool Start() {
 	bano.specular = glm::vec4(0.1f, 0.1f, 0.1f, 1.0f); //pocos reflejos
 	bano.transparency = 1.0f;//transparencia normal
 	// SoundEngine->play2D("sound/EternalGarden.mp3", true);
-	/*
+	
 	//acuario
 	acuar.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f); // opaco
 	acuar.diffuse = glm::vec4(0.9f, 0.9f, 0.9f, 1.0f); // Apariencia de limpieza 
 	acuar.specular = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f); // reflejos medios
 	acuar.transparency = 1.0f;//transparencia normal
-	*/
+	
 	//Teko
 	tek.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f); // opaco
 	tek.diffuse = glm::vec4(0.4f, 0.3f, 0.2f, 1.0f); // Apariencia de limpieza 
 	tek.specular = glm::vec4(0.3f, 0.3f, 0.3f, 1.0f); // reflejos medios
 	tek.transparency = 1.0f;//transparencia normal
-	/*
+	
 	//alien
 	alie.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f); // opaco
 	alie.diffuse = glm::vec4(0.3f, 0.3f, 0.3f, 1.0f); // Apariencia de limpieza 
 	alie.specular = glm::vec4(0.3f, 0.3f, 0.3f, 1.0f); // reflejos medios
 	alie.transparency = 1.0f;//transparencia normal
-	/*
+	
 	//estacionmamineto
 	parking.ambient = glm::vec4(0.05f, 0.05f, 0.05f, 1.0f); // opaco
 	parking.diffuse = glm::vec4(0.6f, 0.6f, 0.6f, 1.0f); // Apariencia de limpieza 
 	parking.specular = glm::vec4(0.9f, 0.9f, 0.9f, 1.0f); // reflejos altos
 	parking.transparency = 1.0f;//transparencia normal
-	*/
+	
 	//fachada
 	parking.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f); // opaco
 	parking.diffuse = glm::vec4(0.3f, 0.3f, 0.3f, 1.0f); // Apariencia de limpieza 
@@ -331,6 +337,12 @@ bool Start() {
 	s.diffuse = glm::vec4(0.4f, 0.4f, 0.4f, 1.0f); // Apariencia de limpieza 
 	s.specular = glm::vec4(0.8f, 0.8f, 0.8f, 1.0f); // reflejos altos
 	s.transparency = 1.0f;//transparencia normal*/
+	//plumuilla y poste
+	a.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f); // opaco
+	a.diffuse = glm::vec4(0.3f, 0.3f, 0.3f, 1.0f); // Apariencia de limpieza 
+	a.specular = glm::vec4(0.3f, 0.3f, 0.3f, 1.0f); // reflejos medios
+	a.transparency = 1.0f;//transparencia normal
+
 	return true;
 }
 
@@ -429,7 +441,15 @@ bool Update() {
 		mLightsShader->setVec4("MaterialSpecularColor", tiendar.specular);
 		mLightsShader->setFloat("transparency", tiendar.transparency);
 
-		//TiendaRopa->Draw(*mLightsShader);
+		TiendaRopa->Draw(*mLightsShader);
+		
+		//poste
+		mLightsShader->setVec4("MaterialAmbientColor", a.ambient);
+		mLightsShader->setVec4("MaterialDiffuseColor", a.diffuse);
+		mLightsShader->setVec4("MaterialSpecularColor", a.specular);
+		mLightsShader->setFloat("transparency", a.transparency);
+		Poste->Draw(*mLightsShader);
+
 		
 		//tienda de comida
 		mLightsShader->setVec4("MaterialAmbientColor", tiendac.ambient);
@@ -449,14 +469,14 @@ bool Update() {
 		mLightsShader->setVec4("MaterialSpecularColor", bano.specular);
 		mLightsShader->setFloat("transparency", bano.transparency);
 		banos->Draw(*mLightsShader);
-		/*
+		
 		//acuario
 		mLightsShader->setVec4("MaterialAmbientColor", acuar.ambient);
 		mLightsShader->setVec4("MaterialDiffuseColor", acuar.diffuse);
 		mLightsShader->setVec4("MaterialSpecularColor", acuar.specular);
 		mLightsShader->setFloat("transparency", acuar.transparency);
 		acuario->Draw(*mLightsShader);
-		*/
+		
 
 		//teko
 		mLightsShader->setVec4("MaterialAmbientColor", tek.ambient);
@@ -467,18 +487,18 @@ bool Update() {
 		//puerta iz	
 		
 		//alien
-		//mLightsShader->setVec4("MaterialAmbientColor", alie.ambient);
-		//mLightsShader->setVec4("MaterialDiffuseColor", alie.diffuse);
-		//mLightsShader->setVec4("MaterialSpecularColor", alie.specular);
-		//mLightsShader->setFloat("transparency", alie.transparency);
-		//alien->Draw(*mLightsShader);
+		mLightsShader->setVec4("MaterialAmbientColor", alie.ambient);
+		mLightsShader->setVec4("MaterialDiffuseColor", alie.diffuse);
+		mLightsShader->setVec4("MaterialSpecularColor", alie.specular);
+		mLightsShader->setFloat("transparency", alie.transparency);
+		alien->Draw(*mLightsShader);
 
 		//estacionamiento
-		//mLightsShader->setVec4("MaterialAmbientColor", parking.ambient);
-		//mLightsShader->setVec4("MaterialDiffuseColor", parking.diffuse);
-		//mLightsShader->setVec4("MaterialSpecularColor", parking.specular);
-		//mLightsShader->setFloat("transparency", parking.transparency);
-		//Estascionamineto->Draw(*mLightsShader);
+		mLightsShader->setVec4("MaterialAmbientColor", parking.ambient);
+		mLightsShader->setVec4("MaterialDiffuseColor", parking.diffuse);
+		mLightsShader->setVec4("MaterialSpecularColor", parking.specular);
+		mLightsShader->setFloat("transparency", parking.transparency);
+		Estascionamineto->Draw(*mLightsShader);
 
 		
 		//fachada
@@ -486,7 +506,7 @@ bool Update() {
 		mLightsShader->setVec4("MaterialDiffuseColor", facha.diffuse);
 		mLightsShader->setVec4("MaterialSpecularColor", facha.specular);
 		mLightsShader->setFloat("transparency", facha.transparency);
-		fachada->Draw(*mLightsShader);
+	fachada->Draw(*mLightsShader);
 		//sol
 		mLightsShader->setVec4("MaterialAmbientColor", s.ambient);
 		mLightsShader->setVec4("MaterialDiffuseColor", s.diffuse);
@@ -499,6 +519,17 @@ bool Update() {
 		mLightsShader->setVec4("MaterialSpecularColor", banque.specular);
 		mLightsShader->setFloat("transparency", banque.transparency);
 		Banqueta->Draw(*mLightsShader);
+		//tineda pluma
+		model = glm::mat4(1.0f);//reinicio de matriz 
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));//rotacion para vista adecuada
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	//gurdamos escla
+
+		model = glm::translate(model, glm::vec3(93.683f, 88.235f, 4.905f));
+		//model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(pluma), glm::vec3(0.0f, 1.0f, 0.0f));
+		//model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		mLightsShader->setMat4("model", model);
+		plumilla->Draw(*mLightsShader);
 
 		// Aplicamos propiedades materiales de cristal
 		mLightsShader->setVec4("MaterialAmbientColor", material.ambient);
@@ -508,6 +539,10 @@ bool Update() {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
 		// ubicacion de puerta EIZQ
+		model = glm::mat4(1.0f);//reinicio de matriz 
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));//rotacion para vista adecuada
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	//gurdamos escla
+
 		model = glm::translate(model, glm::vec3(-5.0771f, 0.0f, 0.0f));
 		// Efecto de puerta con bisagra
 		model = glm::rotate(model, glm::radians(door_rotation), glm::vec3(0.0f, 0.0f, 1.0f));
@@ -682,7 +717,7 @@ bool Update() {
 	glUseProgram(0);
 
 	//glUseProgram(0);
-	/*
+	
 	{
 		// Activamos el shader de Phong
 		proceduralShader->use();
@@ -712,7 +747,7 @@ bool Update() {
 	}
 
 	glUseProgram(0);
-	*/
+	
 
 	// Deplegamos los indicadores auxiliares de cada fuente de iluminación
 	
@@ -748,7 +783,7 @@ bool Update() {
 	glUseProgram(0);
 	
 
-	/*
+	
 	{
 		kirbi->UpdateAnimation(deltaTime);
 
@@ -774,7 +809,7 @@ bool Update() {
 		kirbi->Draw(*dynamicShader);
 	}
 	glUseProgram(0);
-	*/
+	
 	// glfw: swap buffers 
 	glfwSwapBuffers(window);
 	glfwPollEvents();
@@ -816,11 +851,11 @@ void processInput(GLFWwindow* window)
 		camera.Position = glm::vec3(58.0f, 300.0f, -44.0f);//vista superior
 
 	}
-	if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS) {
-		gLights[0].Position.y += 0.01f;
+	if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) {
+		pluma = 0.0f;//CERRAR PLUMA
 	}
-	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
-		gLights[0].Position.y -= 0.01f;
+	if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) {
+		pluma = -90.0f;//ABRIR PLUMA
 	}
 	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) {
 		gLights[0].Position.x += 0.01f;
@@ -837,12 +872,14 @@ void processInput(GLFWwindow* window)
 		door_neg = -90.0f;
 		door_rotation = 90.0f;
 		//door_neg -= 0.1f;
+		
 	}
 	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS){
 		//door_rotation -= 0.1f;
 		door_rotation =0.0f;
 		//door_neg += 0.1f;
 		door_neg = 0.0f;
+		
 		}
 }
 
